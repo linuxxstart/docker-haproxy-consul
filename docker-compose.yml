@@ -15,9 +15,7 @@ services:
       - -bind={{ GetInterfaceIP "eth0" }}
       - -client=0.0.0.0
       - -ui
-      - -advertise=10.90.0.210
-#    volumes:
-#      - consul:/data
+      - -advertise=192.168.1.169
     deploy:
       mode: global
       placement:
@@ -37,29 +35,42 @@ services:
     networks:
       - rede_proxy
 
-  sigaa:
-    image: sigaa:latest
+  meusite:
+    image: meusite:latest
+    ports:
+      - 8080:80
+#    volumes:
+#      - ./nginx:/usr/share/nginx/html/
+    environment:
+      - TZ=America/Sao_Paulo
+    networks:
+      - rede_proxy
+    deploy:
+      replicas: 2
+  
+#  sigaa:
+#    image: sigaa:latest
 #    deploy:
 #      replicas: 3 - vai ter ter containers do sigaa
 #      update_config: .
 #      parallelism: 1 - quando houver alguma atualizacao de imagem por exemplo ele vai fazer 1 container por vez
 #      delay: 10s - depois de terminar 1 ele começará  o outro em 10s
 #      order: start_first - primeiro ele iniciar os containers novos e depois para os antigos
-    ports:
-      - 8180:8180
-    volumes:
-      - type: bind
-        source: /usr/local/sistemas/
-        target: /usr/local/sistemas/
-      - type: bind
-        source: /usr/local/jboss-5.1.0.GA/
-        target: /usr/local/jboss-5.1.0.GA/
-    environment:
-      - TZ=America/Sao_Paulo
-    networks:
-      - rede_proxy
-    deploy:
-      replicas: 1
+#    ports:
+#      - 8180:8180
+#    volumes:
+#      - type: bind
+#        source: /usr/local/sistemas/
+#        target: /usr/local/sistemas/
+#      - type: bind
+#        source: /usr/local/jboss-5.1.0.GA/
+#        target: /usr/local/jboss-5.1.0.GA/
+#    environment:
+#      - TZ=America/Sao_Paulo
+#    networks:
+#      - rede_proxy
+#    deploy:
+#      replicas: 1
 
   haproxy:
     image: haproxy:1.9.11
@@ -78,7 +89,3 @@ networks:
   rede_proxy:
     external:
       name: rede_proxy
-
-#volumes:
-#  consul:
-    
