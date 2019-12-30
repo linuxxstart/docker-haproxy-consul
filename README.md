@@ -1,2 +1,2 @@
 # docker-haproxy-consul
-Load balance com HAproxy e consul para registrar os microsserviços do docker
+Balanceamendo de carga com HAproxy e consul para registrar os micros serviços do docker
